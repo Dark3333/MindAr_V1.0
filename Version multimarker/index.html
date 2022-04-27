@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+
+        // detect target found
+        const exampleTarget = document.getElementById("example-target");
+        var vid = document.getElementById("bailarina");
+        var vid2 = document.getElementById("bulma");
+        var vid3 = document.getElementById("chicago");
+        var vid4 = document.getElementById("converter");
+        var vid5 = document.getElementById("elefante");
+        var vid6 = document.getElementById("ferrari_web");
+        var vid7 = document.getElementById("goku");
+
+        exampleTarget.addEventListener("targetFound", event => {
+          
+          vid.play();
+          vid2.play();
+          vid3.play();
+          vid4.play();
+          vid5.play();
+          vid6.play();
+          vid7.play();
+        });
+
+        // detect target lost
+        exampleTarget.addEventListener("targetLost", event => {
+          
+          vid.pause();
+          vid2.pause();
+          vid3.pause();
+          vid4.pause();
+          vid5.pause();
+          vid6.pause();
+          vid7.pause();
+          //Cuando el marcador desaparece de la pantalla, el vídeo se reproduce nuevamente.
+          vid.currentTime = 0;
+          vid2.currentTime = 0;
+          vid3.currentTime = 0;
+          vid4.currentTime = 0;
+          vid5.currentTime = 0;
+          vid6.currentTime = 0;
+          vid7.currentTime = 0;
+        });
+
+      });
+    </script>
+
+  </head>
+  <body>
+    <a-scene 
+      mindar-image="
+        imageTargetSrc: dragon.mind; 
+        maxTrack: 7;
+        warmupTolerance: 2;
+        missTolerance: 2
+        filterMinCF:0.1; filterBeta: 100;
+        " 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+
+      <a-assets>
+        <video id="bailarina" loop="true" muted src="video/Bailarina.mp4" webkit-playsinline></video>
+        <video id="bulma" loop="true" muted src="video/Bulma_web.mp4" webkit-playsinline></video>
+        <video id="chicago" loop="true" muted src="video/Chicago web.mp4" webkit-playsinline></video>
+        <video id="converter" loop="true" muted src="video/converter.mp4" webkit-playsinline></video>
+        <video id="elefante" loop="true" muted src="video/elefante safary 3.mp4" webkit-playsinline></video>
+        <video id="ferrari_web" loop="true" muted src="video/Ferrari_web.mp4" webkit-playsinline></video>
+        <video id="goku" loop="true" muted src="video/goku.mp4" webkit-playsinline></video>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity id="example-target" mindar-image-target="targetIndex: 0">
+        <a-video src="#converter" width="1" height="1.5"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target" mindar-image-target="targetIndex: 1">
+        <a-video src="#bulma" width="1" height="1.5"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target" mindar-image-target="targetIndex: 2">
+        <a-video src="#chicago" width="1" height="0.8"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target" mindar-image-target="targetIndex: 3">
+        <a-video src="#converter" width="1" height="1.5"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target" mindar-image-target="targetIndex: 4">
+        <a-video src="#elefante" width="1" height="1.5"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target" mindar-image-target="targetIndex: 5">
+        <a-video src="#ferrari_web" width="1" height="1.5"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target" mindar-image-target="targetIndex: 6">
+        <a-video src="#goku" width="1" height="1.5"></a-video>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>

@@ -1,0 +1,963 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <style>
+      #example-scanning-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 2;
+      }
+      #progress_bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 3;
+      }
+      #progress_bar .inner_progress{
+        align-items: center;
+        justify-content: center;
+        position: absolute;        
+      }
+      #msg {
+        color: white;
+        font-style: bold;
+        font-size: 5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        z-index: 4;
+      }
+
+      progress {
+        -webkit-appearance: none;
+        vertical-align:  0;
+        width: 300px;
+      }
+      ::-webkit-progress-bar {        
+        background-color: none;
+        opacity: 0.5;
+        height: 100px;        
+      }
+      ::-webkit-progress-value {
+        opacity: 0.5;
+        background-color: white;
+        height: 100%; 
+        widht: 100%;
+      }
+      #progress_bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 3;
+      }
+
+      @media (min-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 50vh;
+          height: 50vh;
+        }
+      }
+      @media (max-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 80vw;
+          height: 80vw;
+        }
+      }
+
+      #example-scanning-overlay .inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background:
+          linear-gradient(to right, white 5px, transparent 5px) 0 0,
+          linear-gradient(to right, white 5px, transparent 5px) 0 100%,
+          linear-gradient(to left, white 5px, transparent 5px) 100% 0,
+          linear-gradient(to left, white 5px, transparent 5px) 100% 100%,
+          linear-gradient(to bottom, white 5px, transparent 5px) 0 0,
+          linear-gradient(to bottom, white 5px, transparent 5px) 100% 0,
+          linear-gradient(to top, white 5px, transparent 5px) 0 100%,
+          linear-gradient(to top, white 5px, transparent 5px) 100% 100%;
+        background-repeat: no-repeat;
+        background-size: 40px 40px;
+      }
+
+      #example-scanning-overlay.hidden {
+        display: none;
+      }
+      #progress_bar.hidden {
+        display: none;
+      }     
+      #example-scanning-overlay img {
+        opacity: 0.6;
+        width: 90%;
+        align-self: center;
+      }
+
+      #example-scanning-overlay .inner .scanline {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        background: white;
+        animation: move 2s linear infinite;
+      }
+      @keyframes move {
+        0%, 100% { top: 0% }
+        50% { top: calc(100% - 5px) }
+      }
+    </style>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+
+        date = Date.now(); //current timestamp since UNIX epoch
+        //get a reference to the progress element using its id attribute
+        progress = document.getElementById('loader');
+        interval = setInterval(updateProgress, 100);
+
+        // detect target found
+        const exampleTarget1 = document.getElementById("example-target1");
+        const exampleTarget2 = document.getElementById("example-target2");
+        const exampleTarget3 = document.getElementById("example-target3");
+        const exampleTarget4 = document.getElementById("example-target4");
+        const exampleTarget5 = document.getElementById("example-target5");
+        const exampleTarget6 = document.getElementById("example-target6");
+        const exampleTarget7 = document.getElementById("example-target7");
+        const exampleTarget8 = document.getElementById("example-target8");
+        const exampleTarget9 = document.getElementById("example-target9");
+        const exampleTarget10 = document.getElementById("example-target10");
+        const exampleTarget11 = document.getElementById("example-target11");
+        const exampleTarget12 = document.getElementById("example-target12");
+        const exampleTarget13 = document.getElementById("example-target13");
+        const exampleTarget14 = document.getElementById("example-target14");
+        const exampleTarget15 = document.getElementById("example-target15");
+        const exampleTarget16 = document.getElementById("example-target16");
+        const exampleTarget17 = document.getElementById("example-target17");
+        const exampleTarget18 = document.getElementById("example-target18");
+        const exampleTarget19 = document.getElementById("example-target19");
+        const exampleTarget20 = document.getElementById("example-target20");
+        const exampleTarget21 = document.getElementById("example-target21");
+        const exampleTarget22 = document.getElementById("example-target22");
+        const exampleTarget23 = document.getElementById("example-target23");
+        const exampleTarget24 = document.getElementById("example-target24");
+        const exampleTarget25 = document.getElementById("example-target25");
+        const exampleTarget26 = document.getElementById("example-target26");
+        const exampleTarget27 = document.getElementById("example-target27");
+        const exampleTarget28 = document.getElementById("example-target28");
+        const exampleTarget29 = document.getElementById("example-target29");
+        const exampleTarget30 = document.getElementById("example-target30");
+        const exampleTarget31 = document.getElementById("example-target31");
+        const exampleTarget32 = document.getElementById("example-target32");
+        const exampleTarget33 = document.getElementById("example-target33");
+        const exampleTarget34 = document.getElementById("example-target34");
+        const exampleTarget35 = document.getElementById("example-target35");
+        const exampleTarget36 = document.getElementById("example-target36");
+        const exampleTarget37 = document.getElementById("example-target37");
+        const exampleTarget38 = document.getElementById("example-target38");
+        const exampleTarget39 = document.getElementById("example-target39");
+        const exampleTarget40 = document.getElementById("example-target40");
+        const exampleTarget41 = document.getElementById("example-target41");
+        const exampleTarget42 = document.getElementById("example-target42");
+        const exampleTarget43 = document.getElementById("example-target43");
+
+        var vid1 = document.getElementById("allterrain");
+        var vid2 = document.getElementById("Brenda");
+        var vid3 = document.getElementById("Bulma");
+        var vid4 = document.getElementById("Chicago");
+        var vid5 = document.getElementById("Elephant");
+        var vid6 = document.getElementById("faithingod");
+        var vid7 = document.getElementById("ferrari");
+        var vid8 = document.getElementById("goku");
+        var vid9 = document.getElementById("Gothic");
+        var vid10 = document.getElementById("Hulk");
+        var vid11 = document.getElementById("hypercube");
+        var vid12 = document.getElementById("impossible");
+        var vid13 = document.getElementById("Inner_flame");
+        var vid14 = document.getElementById("IronMan");
+        var vid15 = document.getElementById("LA");
+        var vid16 = document.getElementById("Lamborghini");
+        var vid17 = document.getElementById("Las_Vegas");
+        var vid18 = document.getElementById("Liberty");
+        var vid19 = document.getElementById("lips");
+        var vid20 = document.getElementById("MARIA-LEON");
+        var vid21 = document.getElementById("Model");
+        var vid22 = document.getElementById("Monopoly_Dollar");
+        var vid23 = document.getElementById("Monopoly_Run");
+        var vid24 = document.getElementById("Monopoly_Supreme");
+        var vid25 = document.getElementById("Monopoly_world");
+        var vid26 = document.getElementById("Naruto_Sasuke");
+        var vid27 = document.getElementById("Nevermiss");
+        var vid28 = document.getElementById("New_York");
+        var vid29 = document.getElementById("panoramica");
+        var vid30 = document.getElementById("Pearl_earring");
+        var vid31 = document.getElementById("rafael");
+        var vid32 = document.getElementById("Roshi");
+        var vid33 = document.getElementById("San_Francisco");
+        var vid34 = document.getElementById("ShenLong");
+        var vid35 = document.getElementById("Tennis");
+        var vid36 = document.getElementById("Think_free");
+        var vid37 = document.getElementById("Time_is_Money");
+        var vid38 = document.getElementById("Van_Gogh");
+        var vid39 = document.getElementById("vegetto");
+        var vid40 = document.getElementById("venus");
+        var vid41 = document.getElementById("wolf");
+        var vid42 = document.getElementById("worldmap");
+        var vid43 = document.getElementById("zVan_Gogh");
+        //------------------------------
+        // detect target found
+        exampleTarget1.addEventListener("targetFound", event => {          
+          vid1.play();
+          vid1.muted=true;
+        });
+        // detect target lost
+        exampleTarget1.addEventListener("targetLost", event => {          
+          vid1.pause();
+          vid1.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget2.addEventListener("targetFound", event => {          
+          vid2.play();
+          vid2.muted=true;
+        });
+        // detect target lost
+        exampleTarget2.addEventListener("targetLost", event => {          
+          vid2.pause();
+          vid2.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget3.addEventListener("targetFound", event => {          
+          vid3.play();
+          vid3.muted=true;
+        });
+        // detect target lost
+        exampleTarget3.addEventListener("targetLost", event => {          
+          vid3.pause();
+          vid3.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget4.addEventListener("targetFound", event => {          
+          vid4.play();
+          vid4.muted=true;
+        });
+        // detect target lost
+        exampleTarget4.addEventListener("targetLost", event => {          
+          vid4.pause();
+          vid4.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget5.addEventListener("targetFound", event => {          
+          vid5.play();
+          vid5.muted=true;
+        });
+        // detect target lost
+        exampleTarget5.addEventListener("targetLost", event => {          
+          vid5.pause();
+          vid5.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget6.addEventListener("targetFound", event => {          
+          vid6.play();
+          vid6.muted=true;
+        });
+        // detect target lost
+        exampleTarget6.addEventListener("targetLost", event => {          
+          vid6.pause();
+          vid6.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget7.addEventListener("targetFound", event => {          
+          vid7.play();
+          vid7.muted=true;
+        });
+        // detect target lost
+        exampleTarget7.addEventListener("targetLost", event => {          
+          vid7.pause();
+          vid7.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget8.addEventListener("targetFound", event => {          
+          vid8.play();
+          vid8.muted=true;
+        });
+        // detect target lost
+        exampleTarget8.addEventListener("targetLost", event => {          
+          vid8.pause();
+          vid8.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget9.addEventListener("targetFound", event => {          
+          vid9.play();
+          vid9.muted=true;
+        });
+        // detect target lost
+        exampleTarget9.addEventListener("targetLost", event => {          
+          vid9.pause();
+          vid9.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget10.addEventListener("targetFound", event => {          
+          vid10.play();
+          vid10.muted=true;
+        });
+        // detect target lost
+        exampleTarget10.addEventListener("targetLost", event => {          
+          vid10.pause();
+          vid10.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget11.addEventListener("targetFound", event => {          
+          vid11.play();
+          vid11.muted=true;
+        });
+        // detect target lost
+        exampleTarget11.addEventListener("targetLost", event => {          
+          vid11.pause();
+          vid11.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget12.addEventListener("targetFound", event => {          
+          vid12.play();
+          vid12.muted=true;
+        });
+        // detect target lost
+        exampleTarget12.addEventListener("targetLost", event => {          
+          vid12.pause();
+          vid12.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget13.addEventListener("targetFound", event => {          
+          vid13.play();
+          vid13.muted=true;
+        });
+        // detect target lost
+        exampleTarget13.addEventListener("targetLost", event => {          
+          vid13.pause();
+          vid13.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget14.addEventListener("targetFound", event => {          
+          vid14.play();
+          vid14.muted=true;
+        });
+        // detect target lost
+        exampleTarget14.addEventListener("targetLost", event => {          
+          vid14.pause();
+          vid14.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget15.addEventListener("targetFound", event => {          
+          vid15.play();
+          vid15.muted=true;
+        });
+        // detect target lost
+        exampleTarget15.addEventListener("targetLost", event => {          
+          vid15.pause();
+          vid15.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget16.addEventListener("targetFound", event => {          
+          vid16.play();
+          vid16.muted=true;
+        });
+        // detect target lost
+        exampleTarget16.addEventListener("targetLost", event => {          
+          vid16.pause();
+          vid16.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget17.addEventListener("targetFound", event => {          
+          vid17.play();
+          vid17.muted=true;
+        });
+        // detect target lost
+        exampleTarget17.addEventListener("targetLost", event => {          
+          vid17.pause();
+          vid17.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget18.addEventListener("targetFound", event => {          
+          vid18.play();
+          vid18.muted=true;
+        });
+        // detect target lost
+        exampleTarget18.addEventListener("targetLost", event => {          
+          vid18.pause();
+          vid18.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget19.addEventListener("targetFound", event => {          
+          vid19.play();
+          vid19.muted=true;
+        });
+        // detect target lost
+        exampleTarget19.addEventListener("targetLost", event => {          
+          vid19.pause();
+          vid19.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget20.addEventListener("targetFound", event => {          
+          vid20.play();
+          vid20.muted=true;
+        });
+        // detect target lost
+        exampleTarget20.addEventListener("targetLost", event => {          
+          vid20.pause();
+          vid20.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget21.addEventListener("targetFound", event => {          
+          vid21.play();
+          vid21.muted=true;
+        });
+        // detect target lost
+        exampleTarget21.addEventListener("targetLost", event => {          
+          vid21.pause();
+          vid21.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget22.addEventListener("targetFound", event => {          
+          vid22.play();
+          vid22.muted=true;
+        });
+        // detect target lost
+        exampleTarget22.addEventListener("targetLost", event => {          
+          vid22.pause();
+          vid22.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget23.addEventListener("targetFound", event => {          
+          vid23.play();
+          vid23.muted=true;
+        });
+        // detect target lost
+        exampleTarget23.addEventListener("targetLost", event => {          
+          vid23.pause();
+          vid23.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget24.addEventListener("targetFound", event => {          
+          vid24.play();
+          vid24.muted=true;
+        });
+        // detect target lost
+        exampleTarget24.addEventListener("targetLost", event => {          
+          vid24.pause();
+          vid24.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget25.addEventListener("targetFound", event => {          
+          vid25.play();
+          vid25.muted=true;
+        });
+        // detect target lost
+        exampleTarget25.addEventListener("targetLost", event => {          
+          vid25.pause();
+          vid25.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget26.addEventListener("targetFound", event => {          
+          vid26.play();
+          vid26.muted=true;
+        });
+        // detect target lost
+        exampleTarget26.addEventListener("targetLost", event => {          
+          vid26.pause();
+          vid26.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget27.addEventListener("targetFound", event => {          
+          vid27.play();
+          vid27.muted=true;
+        });
+        // detect target lost
+        exampleTarget27.addEventListener("targetLost", event => {          
+          vid27.pause();
+          vid27.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget28.addEventListener("targetFound", event => {          
+          vid28.play();
+          vid28.muted=true;
+        });
+        // detect target lost
+        exampleTarget28.addEventListener("targetLost", event => {          
+          vid28.pause();
+          vid28.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget29.addEventListener("targetFound", event => {          
+          vid29.play();
+          vid29.muted=true;
+        });
+        // detect target lost
+        exampleTarget29.addEventListener("targetLost", event => {          
+          vid29.pause();
+          vid29.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget30.addEventListener("targetFound", event => {          
+          vid30.play();
+          vid30.muted=true;
+        });
+        // detect target lost
+        exampleTarget30.addEventListener("targetLost", event => {          
+          vid30.pause();
+          vid30.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget31.addEventListener("targetFound", event => {          
+          vid31.play();
+          vid31.muted=true;
+        });
+        // detect target lost
+        exampleTarget31.addEventListener("targetLost", event => {          
+          vid31.pause();
+          vid31.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget32.addEventListener("targetFound", event => {          
+          vid32.play();
+          vid32.muted=true;
+        });
+        // detect target lost
+        exampleTarget32.addEventListener("targetLost", event => {          
+          vid32.pause();
+          vid32.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget33.addEventListener("targetFound", event => {          
+          vid33.play();
+          vid33.muted=true;
+        });
+        // detect target lost
+        exampleTarget33.addEventListener("targetLost", event => {          
+          vid33.pause();
+          vid33.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget34.addEventListener("targetFound", event => {          
+          vid34.play();
+          vid34.muted=true;
+        });
+        // detect target lost
+        exampleTarget34.addEventListener("targetLost", event => {          
+          vid34.pause();
+          vid34.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget35.addEventListener("targetFound", event => {          
+          vid35.play();
+          vid35.muted=true;
+        });
+        // detect target lost
+        exampleTarget35.addEventListener("targetLost", event => {          
+          vid35.pause();
+          vid35.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget36.addEventListener("targetFound", event => {          
+          vid36.play();
+          vid36.muted=true;
+        });
+        // detect target lost
+        exampleTarget36.addEventListener("targetLost", event => {          
+          vid36.pause();
+          vid36.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget37.addEventListener("targetFound", event => {          
+          vid37.play();
+          vid37.muted=true;
+        });
+        // detect target lost
+        exampleTarget37.addEventListener("targetLost", event => {          
+          vid37.pause();
+          vid37.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget38.addEventListener("targetFound", event => {          
+          vid38.play();
+          vid38.muted=true;
+        });
+        // detect target lost
+        exampleTarget38.addEventListener("targetLost", event => {          
+          vid38.pause();
+          vid38.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget39.addEventListener("targetFound", event => {          
+          vid39.play();
+          vid39.muted=true;
+        });
+        // detect target lost
+        exampleTarget39.addEventListener("targetLost", event => {          
+          vid39.pause();
+          vid39.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget40.addEventListener("targetFound", event => {          
+          vid40.play();
+          vid40.muted=true;
+        });
+        // detect target lost
+        exampleTarget40.addEventListener("targetLost", event => {          
+          vid40.pause();
+          vid40.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget41.addEventListener("targetFound", event => {          
+          vid41.play();
+          vid41.muted=true;
+        });
+        // detect target lost
+        exampleTarget41.addEventListener("targetLost", event => {          
+          vid41.pause();
+          vid41.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget42.addEventListener("targetFound", event => {          
+          vid42.play();
+          vid42.muted=true;
+        });
+        // detect target lost
+        exampleTarget42.addEventListener("targetLost", event => {          
+          vid42.pause();
+          vid42.muted=true;
+        });
+        //------------------------------
+        // detect target found
+        exampleTarget43.addEventListener("targetFound", event => {          
+          vid43.play();
+          vid43.muted=true;
+        });
+        // detect target lost
+        exampleTarget43.addEventListener("targetLost", event => {          
+          vid43.pause();
+          vid43.muted=true;
+        });
+
+      });
+
+      function updateProgress() {
+        msg.innerHTML = progress.value.toFixed(2) + "%";
+        if (progress.value >= 100) {
+          //stop running this function after value reaches 100 (percent)
+          clearInterval(interval);
+        }
+        var newDate = Date.now();
+        var milliseconds = newDate - date;
+
+        var seconds = Math.floor(milliseconds / 1000);
+        loader.value += seconds/130;
+      }
+    </script>
+
+  </head>
+  <body>
+    <div id="progress_bar" class="hidden">
+      <div class="inner_progress">
+        <div id="msg" style="max-height:100px;overflow-y: auto"></div>
+        <progress id="loader" value="15" max="100"></progress>        
+      </div>
+    </div>
+    <div id="example-scanning-overlay" class="hidden">
+      <div class="inner">
+        <img src="Logo_Artmosa_blanco.png"/>
+        <div class="scanline"></div>
+      </div>
+    </div>
+    <a-scene 
+      mindar-image="uiScanning: #example-scanning-overlay; uiLoading: #progress_bar; imageTargetSrc: targets.mind; maxTrack: 1; filterMinCF:0.00000001; filterBeta: 100; warmupTolerance: 5; missTolerance: 3" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+
+
+      <a-assets>
+        <video id="allterrain" muted loop="true" src="video/allterrain.mp4" webkit-playsinline></video>
+        <video id="Brenda" muted loop="true" src="video/Brenda.mp4" webkit-playsinline></video>
+        <video id="Bulma" muted loop="true" src="video/Bulma.mp4" webkit-playsinline></video>
+        <video id="Chicago" muted loop="true" src="video/Chicago.mp4" webkit-playsinline></video>
+        <video id="Elephant" muted loop="true" src="video/Elephant.mp4" webkit-playsinline></video>
+        <video id="faithingod" muted loop="true" src="video/faithingod.mp4" webkit-playsinline></video>
+        <video id="ferrari" muted loop="true" src="video/ferrari.mp4" webkit-playsinline></video>
+        <video id="goku" muted loop="true" src="video/goku.mp4" webkit-playsinline></video>
+        <video id="Gothic" muted loop="true" src="video/Gothic.mp4" webkit-playsinline></video>
+        <video id="Hulk" muted loop="true" src="video/Hulk.mp4" webkit-playsinline></video>
+        <video id="hypercube" muted loop="true" src="video/hypercube.mp4" webkit-playsinline></video>
+        <video id="impossible" muted loop="true" src="video/impossible.mp4" webkit-playsinline></video>
+        <video id="Inner_flame" muted loop="true" src="video/Inner_flame.mp4" webkit-playsinline></video>
+        <video id="IronMan" muted loop="true" src="video/IronMan.mp4" webkit-playsinline></video>
+        <video id="LA" muted loop="true" src="video/LA.mp4" webkit-playsinline></video>
+        <video id="Lamborghini" muted loop="true" src="video/Lamborghini.mp4" webkit-playsinline></video>
+        <video id="Las_Vegas" muted loop="true" src="video/Las_Vegas.mp4" webkit-playsinline></video>
+        <video id="Liberty" muted loop="true" src="video/Liberty.mp4" webkit-playsinline></video>
+        <video id="lips" muted loop="true" src="video/lips.mp4" webkit-playsinline></video>
+        <video id="MARIA-LEON" muted loop="true" src="video/MARIA-LEON.mp4" webkit-playsinline></video>
+        <video id="Model" muted loop="true" src="video/Model.mp4" webkit-playsinline></video>
+        <video id="Monopoly_Dollar" muted loop="true" src="video/Monopoly_Dollar.mp4" webkit-playsinline></video>
+        <video id="Monopoly_Run" muted loop="true" src="video/Monopoly_Run.mp4" webkit-playsinline></video>
+        <video id="Monopoly_Supreme" muted loop="true" src="video/Monopoly_Supreme.mp4" webkit-playsinline></video>
+        <video id="Monopoly_world" muted loop="true" src="video/Monopoly_world.mp4" webkit-playsinline></video>
+        <video id="Naruto_Sasuke" muted loop="true" src="video/Naruto_Sasuke.mp4" webkit-playsinline></video>
+        <video id="Nevermiss" muted loop="true" src="video/Nevermiss.mp4" webkit-playsinline></video>
+        <video id="New_York" muted loop="true" src="video/New_York.mp4" webkit-playsinline></video>
+        <video id="panoramica" muted loop="true" src="video/panoramica.mp4" webkit-playsinline></video>
+        <video id="Pearl_earring" muted loop="true" src="video/Pearl_earring.mp4" webkit-playsinline></video>
+        <video id="rafael" muted loop="true" src="video/rafael.mp4" webkit-playsinline></video>
+        <video id="Roshi" muted loop="true" src="video/Roshi.mp4" webkit-playsinline></video>
+        <video id="San_Francisco" muted loop="true" src="video/San_Francisco.mp4" webkit-playsinline></video>
+        <video id="ShenLong" muted loop="true" src="video/ShenLong.mp4" webkit-playsinline></video>
+        <video id="Tennis" muted loop="true" src="video/Tennis.mp4" webkit-playsinline></video>
+        <video id="Think_free" muted loop="true" src="video/Think_free.mp4" webkit-playsinline></video>
+        <video id="Time_is_Money" muted loop="true" src="video/Time_is_Money.mp4" webkit-playsinline></video>
+        <video id="Van_Gogh" muted loop="true" src="video/Van_Gogh.mp4" webkit-playsinline></video>
+        <video id="vegetto" muted loop="true" src="video/vegetto.mp4" webkit-playsinline></video>
+        <video id="venus" muted loop="true" src="video/venus.mp4" webkit-playsinline></video>
+        <video id="wolf" muted loop="true" src="video/wolf.mp4" webkit-playsinline></video>
+        <video id="worldmap" muted loop="true" src="video/worldmap.mp4" webkit-playsinline></video>
+        <video id="zVan_Gogh" muted loop="true" src="video/Van_Gogh.mp4" webkit-playsinline></video>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity id="example-target1" mindar-image-target="targetIndex: 0">
+        <a-video src="#allterrain" width="1" height="0.77" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target2" mindar-image-target="targetIndex: 1">
+        <a-video src="#Brenda" width="1" height="1.58" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target3" mindar-image-target="targetIndex: 2">
+        <a-video src="#Bulma" width="1" height="1.3" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target4" mindar-image-target="targetIndex: 3">
+        <a-video src="#Chicago" width="1" height="0.77" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target5" mindar-image-target="targetIndex: 4">
+        <a-video src="#Elephant" width="1" height="0.75" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target6" mindar-image-target="targetIndex: 5">
+        <a-video src="#faithingod" width="1" height="1.19" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target7" mindar-image-target="targetIndex: 6">
+        <a-video src="#ferrari" width="1" height="1.3" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target8" mindar-image-target="targetIndex: 7">
+        <a-video src="#goku" width="1" height="1.26" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target9" mindar-image-target="targetIndex: 8">
+        <a-video src="#Gothic" width="1" height="1.3" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target10" mindar-image-target="targetIndex: 9">
+        <a-video src="#Hulk" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target11" mindar-image-target="targetIndex: 10">
+        <a-video src="#hypercube" width="1" height="1.3" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target12" mindar-image-target="targetIndex: 11">
+        <a-video src="#impossible" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target13" mindar-image-target="targetIndex: 12">
+        <a-video src="#Inner_flame" width="1" height="0.77" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target14" mindar-image-target="targetIndex: 13">
+        <a-video src="#IronMan" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target15" mindar-image-target="targetIndex: 14">
+        <a-video src="#LA" width="1" height="0.77" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target16" mindar-image-target="targetIndex: 15">
+        <a-video src="#Lamborghini" width="1" height="1.3" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target17" mindar-image-target="targetIndex: 16">
+        <a-video src="#Las_Vegas" width="1" height="0.77" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target18" mindar-image-target="targetIndex: 17">
+        <a-video src="#Liberty" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target19" mindar-image-target="targetIndex: 18">
+        <a-video src="#lips" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target20" mindar-image-target="targetIndex: 19">
+        <a-video src="#MARIA-LEON" width="1" height="2.14" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target21" mindar-image-target="targetIndex: 20">
+        <a-video src="#Model" width="1" height="1.5" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target22" mindar-image-target="targetIndex: 21">
+        <a-video src="#Monopoly_Dollar" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target23" mindar-image-target="targetIndex: 22">
+        <a-video src="#Monopoly_Run" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target24" mindar-image-target="targetIndex: 23">
+        <a-video src="#Monopoly_Supreme" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target25" mindar-image-target="targetIndex: 24">
+        <a-video src="#Monopoly_world" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target26" mindar-image-target="targetIndex: 25">
+        <a-video src="#Naruto_Sasuke" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target27" mindar-image-target="targetIndex: 26">
+        <a-video src="#Nevermiss" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target28" mindar-image-target="targetIndex: 27">
+        <a-video src="#New_York" width="1" height="0.77" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target29" mindar-image-target="targetIndex: 28">
+        <a-video src="#panoramica" width="1" height="0.357" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target30" mindar-image-target="targetIndex: 29">
+        <a-video src="#Pearl_earring" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target31" mindar-image-target="targetIndex: 30">
+        <a-video src="#rafael" width="1" height="1.55" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target32" mindar-image-target="targetIndex: 31">
+        <a-video src="#Roshi" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target33" mindar-image-target="targetIndex: 32">
+        <a-video src="#San_Francisco" width="1" height="0.77" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target34" mindar-image-target="targetIndex: 33">
+        <a-video src="#ShenLong" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target35" mindar-image-target="targetIndex: 34">
+        <a-video src="#Tennis" width="1" height="0.72" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target36" mindar-image-target="targetIndex: 35">
+        <a-video src="#Think_free" width="1" height="0.75" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target37" mindar-image-target="targetIndex: 36">
+        <a-video src="#Time_is_Money" width="1" height="1.39" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target38" mindar-image-target="targetIndex: 37">
+        <a-video src="#Van_Gogh" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target39" mindar-image-target="targetIndex: 38">
+        <a-video src="#vegetto" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target40" mindar-image-target="targetIndex: 39">
+        <a-video src="#venus" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target41" mindar-image-target="targetIndex: 40">
+        <a-video src="#wolf" width="1" height="0.76" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target42" mindar-image-target="targetIndex: 41">
+        <a-video src="#worldmap" width="1" height="0.58" opacity="0.85"></a-video>
+      </a-entity>
+
+      <a-entity id="example-target43" mindar-image-target="targetIndex: 42">
+        <a-video src="#zVan_Gogh" width="1" height="1.33" opacity="0.85"></a-video>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
